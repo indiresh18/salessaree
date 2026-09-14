@@ -1,0 +1,222 @@
+import { Saree } from '../types';
+
+export const FALLBACK_SAREE_IMAGE = "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=800&q=80";
+
+export const INITIAL_SAREES: Saree[] = [
+  {
+    id: "SAR-1001",
+    name: "Pink Kanchipuram Silk Saree",
+    price: 3499,
+    image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=800&q=80",
+    category: "Kanchipuram",
+    fabric: "Silk",
+    color: "Pink",
+    description: "Elegant traditional Kanchipuram silk saree woven with intricate gold zari brocade motifs across the body and a rich contrasting pallu.",
+    stock: 12,
+    createdAt: "2026-08-01T10:00:00.000Z"
+  },
+  {
+    id: "SAR-1002",
+    name: "Royal Red Banarasi Brocade Saree",
+    price: 4999,
+    image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=800&q=80",
+    category: "Banarasi",
+    fabric: "Silk",
+    color: "Red",
+    description: "A timeless bridal Red Banarasi silk saree adorned with royal silver and gold floral kadwa weaves and handcrafted border details.",
+    stock: 8,
+    createdAt: "2026-08-05T11:30:00.000Z"
+  },
+  {
+    id: "SAR-1003",
+    name: "Midnight Blue Georgette Party Wear Saree",
+    price: 2799,
+    image: "https://images.unsplash.com/photo-1609357605129-26f69add5d6e?auto=format&fit=crop&w=800&q=80",
+    category: "Party Wear",
+    fabric: "Georgette",
+    color: "Blue",
+    description: "Sophisticated navy blue georgette saree featuring delicate sequin embroidery on borders and light fluid drape for evening galas.",
+    stock: 15,
+    createdAt: "2026-08-10T14:15:00.000Z"
+  },
+  {
+    id: "SAR-1004",
+    name: "Emerald Green Organza Floral Saree",
+    price: 2499,
+    image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=800&q=80",
+    category: "Party Wear",
+    fabric: "Organza",
+    color: "Green",
+    description: "Modern luxury sheer organza saree in deep emerald green, complemented by delicate silver hand-embroidery along the borders.",
+    stock: 10,
+    createdAt: "2026-08-12T09:20:00.000Z"
+  },
+  {
+    id: "SAR-1005",
+    name: "Mustard Yellow Handloom Linen Saree",
+    price: 1899,
+    image: "https://images.unsplash.com/photo-1610030469668-966964032d84?auto=format&fit=crop&w=800&q=80",
+    category: "Traditional",
+    fabric: "Linen",
+    color: "Yellow",
+    description: "Breathable pure handloom mustard yellow linen saree with organic cotton slub texture and gold metallic selvedge.",
+    stock: 20,
+    createdAt: "2026-08-15T16:45:00.000Z"
+  },
+  {
+    id: "SAR-1006",
+    name: "Noir Black Chiffon Sequin Saree",
+    price: 3199,
+    image: "https://images.unsplash.com/photo-1583391733975-22e703957088?auto=format&fit=crop&w=800&q=80",
+    category: "Party Wear",
+    fabric: "Chiffon",
+    color: "Black",
+    description: "Stunning jet-black pure chiffon saree featuring shimmering monochrome sequin work along the pallu for an effortless high-fashion silhouette.",
+    stock: 7,
+    createdAt: "2026-08-18T18:00:00.000Z"
+  },
+  {
+    id: "SAR-1007",
+    name: "Pure Off-White Cotton Mulmul Saree",
+    price: 1450,
+    image: "https://images.unsplash.com/photo-1604014237800-1c9102c219da?auto=format&fit=crop&w=800&q=80",
+    category: "Traditional",
+    fabric: "Cotton",
+    color: "White",
+    description: "Ultra-soft ivory cotton mulmul saree adorned with graceful Bengali jamdani floral motifs and lightweight ease.",
+    stock: 25,
+    createdAt: "2026-08-20T12:10:00.000Z"
+  },
+  {
+    id: "SAR-1008",
+    name: "Deep Purple Kanchipuram Tissue Saree",
+    price: 5499,
+    image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=800&q=80",
+    category: "Kanchipuram",
+    fabric: "Silk",
+    color: "Purple",
+    description: "Majestic deep royal purple silk tissue saree laced with woven pure copper zari peacocks and rich traditional heritage borders.",
+    stock: 6,
+    createdAt: "2026-08-22T15:30:00.000Z"
+  },
+  {
+    id: "SAR-1009",
+    name: "Maroon Heritage Banarasi Silk Saree",
+    price: 4299,
+    image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=800&q=80",
+    category: "Banarasi",
+    fabric: "Silk",
+    color: "Maroon",
+    description: "Rich maroon Banarasi weave with golden floral jaal all over and heavy traditional zari border crafted for special celebratory occasions.",
+    stock: 9,
+    createdAt: "2026-08-25T11:00:00.000Z"
+  },
+  {
+    id: "SAR-1010",
+    name: "Champagne Gold Metallic Tissue Organza Saree",
+    price: 3899,
+    image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=800&q=80",
+    category: "Party Wear",
+    fabric: "Organza",
+    color: "Gold",
+    description: "Luminous champagne gold tissue organza saree crafted with shimmering sheen and scalloped hand-worked cutwork borders.",
+    stock: 14,
+    createdAt: "2026-08-28T13:40:00.000Z"
+  },
+  {
+    id: "SAR-1011",
+    name: "Pastel Pink Chiffon Ombre Saree",
+    price: 2199,
+    image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=800&q=80",
+    category: "Party Wear",
+    fabric: "Chiffon",
+    color: "Pink",
+    description: "Dreamy rose pink ombre pure chiffon saree seamlessly shaded with gold gota patti highlights along the border.",
+    stock: 11,
+    createdAt: "2026-08-30T10:15:00.000Z"
+  },
+  {
+    id: "SAR-1012",
+    name: "Sky Blue Georgette Digital Floral Saree",
+    price: 1999,
+    image: "https://images.unsplash.com/photo-1609357605129-26f69add5d6e?auto=format&fit=crop&w=800&q=80",
+    category: "Traditional",
+    fabric: "Georgette",
+    color: "Blue",
+    description: "Fresh sky blue georgette saree featuring artistic water-color floral digital prints accented with delicate lace trim.",
+    stock: 18,
+    createdAt: "2026-09-01T08:50:00.000Z"
+  },
+  {
+    id: "SAR-1013",
+    name: "Beige Linen Satin Border Saree",
+    price: 1799,
+    image: "https://images.unsplash.com/photo-1610030469668-966964032d84?auto=format&fit=crop&w=800&q=80",
+    category: "Traditional",
+    fabric: "Linen",
+    color: "Beige",
+    description: "Subtle ivory beige linen saree woven with a glossy gold satin silk border and matching tassels along the pallu.",
+    stock: 16,
+    createdAt: "2026-09-03T14:25:00.000Z"
+  },
+  {
+    id: "SAR-1014",
+    name: "Crimson Red Kanchipuram Bridal Saree",
+    price: 6200,
+    image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=800&q=80",
+    category: "Kanchipuram",
+    fabric: "Silk",
+    color: "Red",
+    description: "Opulente bridal crimson red pure Mulberry silk Kanchipuram saree featuring gold zari mandap motifs and heavy temple borders.",
+    stock: 5,
+    createdAt: "2026-09-05T17:10:00.000Z"
+  },
+  {
+    id: "SAR-1015",
+    name: "Olive Green Tussar Silk Saree",
+    price: 2999,
+    image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=800&q=80",
+    category: "Traditional",
+    fabric: "Silk",
+    color: "Green",
+    description: "Rustic olive green natural Tussar silk saree adorned with hand-blocked Kantha stitch patterns and subtle sheen.",
+    stock: 13,
+    createdAt: "2026-09-07T11:45:00.000Z"
+  },
+  {
+    id: "SAR-1016",
+    name: "Golden Yellow Organza Zari Saree",
+    price: 2650,
+    image: "https://images.unsplash.com/photo-1610030469668-966964032d84?auto=format&fit=crop&w=800&q=80",
+    category: "Party Wear",
+    fabric: "Organza",
+    color: "Yellow",
+    description: "Vibrant haldi-yellow organza saree woven with shiny woven zari lines and delicate pearl tassels.",
+    stock: 14,
+    createdAt: "2026-09-09T09:30:00.000Z"
+  },
+  {
+    id: "SAR-1017",
+    name: "Wine Silk Bandhani Saree",
+    price: 3699,
+    image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=800&q=80",
+    category: "Traditional",
+    fabric: "Silk",
+    color: "Maroon",
+    description: "Exquisite deep wine purple silk saree woven with traditional Gujarati hand-tied Bandhani dots and banarasi zari borders.",
+    stock: 8,
+    createdAt: "2026-09-11T16:00:00.000Z"
+  },
+  {
+    id: "SAR-1018",
+    name: "Pure White Chanderi Silk Saree",
+    price: 2250,
+    image: "https://images.unsplash.com/photo-1604014237800-1c9102c219da?auto=format&fit=crop&w=800&q=80",
+    category: "Traditional",
+    fabric: "Silk",
+    color: "White",
+    description: "Ethereal pure white Chanderi silk saree with gold coin butis woven throughout and translucent texture.",
+    stock: 17,
+    createdAt: "2026-09-12T13:20:00.000Z"
+  }
+];
