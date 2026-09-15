@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Save, Upload, Image as ImageIcon, CheckCircle, X } from 'lucide-react';
+import { ArrowLeft, Save, Upload, Image as ImageIcon, CheckCircle, X, Plus } from 'lucide-react';
 import { useShop } from '../../context/ShopContext';
 import { useToast } from '../../context/ToastContext';
 
 const FABRICS = ['Silk', 'Cotton', 'Linen', 'Chiffon', 'Georgette', 'Organza', 'Tussar'];
-const CATEGORIES = ['Kanchipuram', 'Banarasi', 'Party Wear', 'Traditional', 'Bandhani', 'Chanderi'];
+const DEFAULT_CATEGORIES = ['Kanchipuram', 'Banarasi', 'Party Wear', 'Traditional', 'Bandhani', 'Chanderi'];
 const COLORS = ['Red', 'Pink', 'Blue', 'Green', 'Yellow', 'Black', 'White', 'Purple', 'Maroon', 'Gold', 'Beige'];
 
 export const AdminEditSareePage: React.FC = () => {
@@ -17,6 +17,14 @@ export const AdminEditSareePage: React.FC = () => {
   const existing = sarees.find(s => s.id === id);
 
   const [uploadMode, setUploadMode] = useState<'file' | 'url'>('file');
+  const [isCustomCategory, setIsCustomCategory] = useState(false);
+  const [customCategory, setCustomCategory] = useState('');
+
+  const categoryOptions = useMemo(() => {
+    const list = Array.from(new Set([...DEFAULT_CATEGORIES, ...sarees.map(s => s.category)]));
+    return list;
+  }, [sarees]);
+
   const [formData, setFormData] = useState({
     name: '',
     price: '',
@@ -87,6 +95,7 @@ export const AdminEditSareePage: React.FC = () => {
 
     if (!formData.name.trim()) errs.name = 'Saree Name is required';
     if (!formData.price || Number(formData.price) <= 0) errs.price = 'Enter a valid price';
+    if (isCustomCategory && !customCategory.trim()) errs.category = 'Saree type name is required';
     if (!formData.description.trim()) errs.description = 'Description is required';
     if (!formData.stock || Number(formData.stock) < 0) errs.stock = 'Enter valid stock count';
     if (!formData.image.trim()) errs.image = 'Please upload a photo file or provide an image link';
@@ -102,11 +111,13 @@ export const AdminEditSareePage: React.FC = () => {
       return;
     }
 
+    const finalCategory = isCustomCategory ? customCategory.trim() : formData.category;
+
     editSaree(existing.id, {
       name: formData.name.trim(),
       price: Number(formData.price),
       fabric: formData.fabric,
-      category: formData.category,
+      category: finalCategory,
       color: formData.color,
       description: formData.description.trim(),
       stock: Number(formData.stock),
@@ -293,18 +304,59 @@ export const AdminEditSareePage: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-brand-burgundy mb-1">
-                Category *
-              </label>
-              <select
-                value={formData.category}
-                onChange={e => setFormData({ ...formData, category: e.target.value })}
-                className="w-full bg-brand-cream/50 border border-brand-gold/30 rounded-xl px-3 py-3 text-xs font-bold text-brand-burgundy focus:ring-2 focus:ring-brand-gold cursor-pointer"
-              >
-                {CATEGORIES.map(c => (
-                  <option key={c} value={c}>{c}</option>
-                ))}
-              </select>
+              <div className="flex items-center justify-between mb-1">
+                <label className="block text-xs font-bold uppercase tracking-wider text-brand-burgundy">
+                  Saree Type *
+                </label>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsCustomCategory(!isCustomCategory);
+                    if (isCustomCategory) {
+                      setCustomCategory('');
+                    }
+                  }}
+                  className="text-[11px] font-bold text-brand-burgundy hover:text-brand-wine underline flex items-center gap-0.5"
+                >
+                  <Plus className="w-3 h-3 text-brand-gold" />
+                  {isCustomCategory ? 'Select Existing' : 'New Saree Type'}
+                </button>
+              </div>
+
+              {isCustomCategory ? (
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Enter new saree type (e.g. Patola)"
+                    value={customCategory}
+                    onChange={e => setCustomCategory(e.target.value)}
+                    className={`w-full px-3 py-3 bg-brand-cream/50 border rounded-xl text-xs font-bold text-brand-burgundy focus:ring-2 focus:ring-brand-gold focus:outline-none ${
+                      errors.category ? 'border-red-500' : 'border-brand-gold/30'
+                    }`}
+                  />
+                  {errors.category && <p className="text-xs text-red-600 mt-1">{errors.category}</p>}
+                </div>
+              ) : (
+                <select
+                  value={formData.category}
+                  onChange={e => {
+                    if (e.target.value === '__ADD_NEW__') {
+                      setIsCustomCategory(true);
+                      setCustomCategory('');
+                    } else {
+                      setFormData({ ...formData, category: e.target.value });
+                    }
+                  }}
+                  className="w-full bg-brand-cream/50 border border-brand-gold/30 rounded-xl px-3 py-3 text-xs font-bold text-brand-burgundy focus:ring-2 focus:ring-brand-gold cursor-pointer"
+                >
+                  {categoryOptions.map(c => (
+                    <option key={c} value={c}>{c}</option>
+                  ))}
+                  <option value="__ADD_NEW__" className="font-bold text-brand-burgundy">
+                    + Add New Saree Type...
+                  </option>
+                </select>
+              )}
             </div>
 
             <div>

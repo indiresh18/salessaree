@@ -28,7 +28,7 @@ export const AdminSidebar: React.FC = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/admin');
+    navigate('/');
   };
 
   const handleResetConfirm = () => {

@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Filter, RotateCcw, Search, SlidersHorizontal } from 'lucide-react';
 import { useShop } from '../../context/ShopContext';
 import { FilterState, SortOption } from '../../types';
 
 const FABRICS = ['All', 'Silk', 'Cotton', 'Linen', 'Chiffon', 'Georgette', 'Organza'];
-const CATEGORIES = ['All', 'Kanchipuram', 'Banarasi', 'Party Wear', 'Traditional'];
+const DEFAULT_CATEGORIES = ['All', 'Kanchipuram', 'Banarasi', 'Party Wear', 'Traditional'];
 const COLORS = ['All', 'Red', 'Pink', 'Blue', 'Green', 'Yellow', 'Black', 'White', 'Purple', 'Maroon', 'Gold', 'Beige'];
 const PRICE_RANGES = ['All', 'Under ₹1,500', '₹1,500 - ₹3,000', '₹3,000 - ₹5,000', 'Above ₹5,000'];
 
@@ -17,7 +17,11 @@ const SORT_OPTIONS: { label: string; value: SortOption }[] = [
 ];
 
 export const FilterBar: React.FC = () => {
-  const { filters, setFilters, resetFilters, sortOption, setSortOption, filteredSarees } = useShop();
+  const { sarees, filters, setFilters, resetFilters, sortOption, setSortOption, filteredSarees } = useShop();
+
+  const availableCategories = useMemo(() => {
+    return Array.from(new Set([...DEFAULT_CATEGORIES, ...sarees.map(s => s.category)]));
+  }, [sarees]);
 
   const handleFilterChange = (key: keyof FilterState, value: string) => {
     setFilters(prev => ({ ...prev, [key]: value }));
@@ -108,7 +112,7 @@ export const FilterBar: React.FC = () => {
             onChange={e => handleFilterChange('category', e.target.value)}
             className="w-full bg-brand-cream/40 border border-brand-gold/30 rounded-xl px-3 py-2 text-xs font-medium text-brand-charcoal focus:ring-2 focus:ring-brand-gold/50 cursor-pointer"
           >
-            {CATEGORIES.map(c => (
+            {availableCategories.map(c => (
               <option key={c} value={c}>{c}</option>
             ))}
           </select>

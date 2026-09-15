@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ShieldCheck, Truck, ArrowLeft, CheckCircle } from 'lucide-react';
+import { ShieldCheck, Truck, ArrowLeft, CheckCircle, CheckCircle2, Sparkles } from 'lucide-react';
 import { useShop } from '../../context/ShopContext';
-import { CustomerInfo } from '../../types';
+import { CustomerInfo, Order } from '../../types';
 import { formatPrice } from '../../utils/formatters';
+import { formatDate } from '../../utils/dateUtils';
 import { useToast } from '../../context/ToastContext';
 
 export const CheckoutPage: React.FC = () => {
@@ -22,8 +23,10 @@ export const CheckoutPage: React.FC = () => {
   });
 
   const [errors, setErrors] = useState<Partial<Record<keyof CustomerInfo, string>>>({});
+  const [placedOrder, setPlacedOrder] = useState<Order | null>(null);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
-  if (cart.length === 0) {
+  if (cart.length === 0 && !showSuccessModal) {
     navigate('/cart');
     return null;
   }
@@ -66,7 +69,8 @@ export const CheckoutPage: React.FC = () => {
 
     const order = placeOrder(formData);
     if (order) {
-      navigate('/order-success', { state: { orderId: order.id } });
+      setPlacedOrder(order);
+      setShowSuccessModal(true);
     }
   };
 
@@ -293,6 +297,74 @@ export const CheckoutPage: React.FC = () => {
         </div>
 
       </form>
+
+      {/* CENTERED ORDER SUCCESS FLASH CARD MODAL */}
+      {showSuccessModal && placedOrder && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-brand-charcoal/70 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border-2 border-brand-gold/40 text-center space-y-6 animate-in zoom-in-95 duration-200 relative overflow-hidden">
+            
+            {/* Decorative Golden Accent Line */}
+            <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-brand-gold via-amber-400 to-brand-gold" />
+
+            {/* Centered Green Badge Icon */}
+            <div className="mx-auto w-20 h-20 rounded-full bg-emerald-50 border-2 border-emerald-500 flex items-center justify-center shadow-lg animate-bounce">
+              <CheckCircle2 className="w-12 h-12 text-emerald-600" />
+            </div>
+
+            {/* Formal Text Message */}
+            <div className="space-y-2">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-brand-gold bg-brand-lightGold/80 px-3.5 py-1 rounded-full border border-brand-gold/30 inline-block">
+                <Sparkles className="w-3 h-3 inline mr-1 text-brand-burgundy" /> Order Successful
+              </span>
+              <h3 className="font-serif text-2xl sm:text-3xl font-bold text-brand-burgundy">
+                Order Placed Successfully!
+              </h3>
+              <p className="text-sm font-medium text-brand-charcoal/80 leading-relaxed px-2">
+                Your order placed successfully and our team will contact you shortly!
+              </p>
+            </div>
+
+            {/* Order Details Summary Box */}
+            <div className="bg-brand-cream/60 rounded-2xl p-4 border border-brand-gold/30 text-left text-xs space-y-2.5">
+              <div className="flex justify-between items-center pb-2 border-b border-brand-gold/20">
+                <span className="text-brand-muted uppercase font-bold tracking-wider">Order ID</span>
+                <span className="font-serif font-bold text-brand-burgundy text-sm">{placedOrder.id}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-brand-muted font-medium">Customer Name</span>
+                <span className="font-bold text-brand-charcoal">{placedOrder.customer.name}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-brand-muted font-medium">Total Amount</span>
+                <span className="font-bold text-brand-burgundy text-sm">{formatPrice(placedOrder.total)}</span>
+              </div>
+              <div className="flex justify-between items-center pt-2 border-t border-brand-gold/20">
+                <span className="text-brand-muted font-medium">Expected Delivery</span>
+                <span className="font-bold text-emerald-700">{formatDate(placedOrder.expectedDelivery)}</span>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
+              <button
+                type="button"
+                onClick={() => navigate('/order-success', { state: { orderId: placedOrder.id } })}
+                className="w-full inline-flex items-center justify-center gap-2 bg-brand-burgundy hover:bg-brand-wine text-white py-3.5 px-5 rounded-xl font-bold text-xs sm:text-sm shadow-md transition-all border border-brand-gold/40 cursor-pointer"
+              >
+                <span>View Order Details</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => navigate('/shop')}
+                className="w-full inline-flex items-center justify-center gap-2 bg-brand-ivory hover:bg-brand-cream text-brand-burgundy py-3.5 px-5 rounded-xl font-bold text-xs sm:text-sm border border-brand-gold/40 transition-all cursor-pointer"
+              >
+                <span>Continue Shopping</span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
     </div>
   );
 };
