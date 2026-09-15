@@ -311,17 +311,24 @@ export const CheckoutPage: React.FC = () => {
               <CheckCircle2 className="w-12 h-12 text-emerald-600" />
             </div>
 
-            {/* Formal Text Message */}
-            <div className="space-y-2">
+            {/* Formal Text Message with Highlighted Banner */}
+            <div className="space-y-3">
               <span className="text-[10px] font-bold uppercase tracking-widest text-brand-gold bg-brand-lightGold/80 px-3.5 py-1 rounded-full border border-brand-gold/30 inline-block">
                 <Sparkles className="w-3 h-3 inline mr-1 text-brand-burgundy" /> Order Successful
               </span>
               <h3 className="font-serif text-2xl sm:text-3xl font-bold text-brand-burgundy">
                 Order Placed Successfully!
               </h3>
-              <p className="text-sm font-medium text-brand-charcoal/80 leading-relaxed px-2">
-                Your order placed successfully and our team will contact you shortly!
-              </p>
+              
+              {/* BOLD & HIGHLIGHTED SUCCESS BANNER */}
+              <div className="bg-gradient-to-r from-amber-50 via-brand-cream to-amber-50 border-2 border-brand-gold/60 rounded-2xl p-3.5 sm:p-4 shadow-sm">
+                <p className="text-sm sm:text-base font-bold text-brand-burgundy leading-relaxed">
+                  ✨ <span className="bg-brand-gold/30 text-brand-deepBurgundy px-2.5 py-0.5 rounded-lg font-extrabold border border-brand-gold/40 inline-block my-0.5">
+                    Your order placed successfully
+                  </span>{' '}
+                  and our team will contact you shortly!
+                </p>
+              </div>
             </div>
 
             {/* Order Details Summary Box */}

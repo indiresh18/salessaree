@@ -24,15 +24,26 @@ export const OrderSuccessPage: React.FC = () => {
         <CheckCircle2 className="w-14 h-14 text-brand-burgundy" />
       </div>
 
-      <div className="space-y-3">
-        <span className="text-xs font-bold uppercase tracking-widest text-brand-gold bg-brand-lightGold/60 px-4 py-1.5 rounded-full border border-brand-gold/30">
-          <Sparkles className="w-3.5 h-3.5 inline mr-1" /> Order Confirmed
+      <div className="space-y-4 max-w-xl mx-auto">
+        <span className="text-xs font-bold uppercase tracking-widest text-brand-gold bg-brand-lightGold/80 px-4 py-1.5 rounded-full border border-brand-gold/30 inline-block shadow-sm">
+          <Sparkles className="w-3.5 h-3.5 inline mr-1 text-brand-burgundy" /> Order Confirmed
         </span>
         <h1 className="font-serif text-3xl sm:text-4xl font-bold text-brand-burgundy">
           Order Placed Successfully!
         </h1>
-        <p className="text-sm text-brand-charcoal/80 max-w-md mx-auto">
-          Thank you for shopping with <strong className="text-brand-burgundy font-serif">ONLY WOMEN</strong>. Your order is being processed for handloom delivery.
+
+        {/* BOLD & HIGHLIGHTED SUCCESS BANNER */}
+        <div className="bg-gradient-to-r from-amber-50 via-brand-cream to-amber-50 border-2 border-brand-gold/60 rounded-2xl p-4 sm:p-5 shadow-md">
+          <p className="text-base sm:text-lg font-bold text-brand-burgundy leading-relaxed">
+            ✨ <span className="bg-brand-gold/30 text-brand-deepBurgundy px-3 py-1 rounded-lg font-extrabold shadow-inner inline-block my-1 border border-brand-gold/40">
+              Your order placed successfully
+            </span>{' '}
+            and our team will contact you shortly!
+          </p>
+        </div>
+
+        <p className="text-xs text-brand-muted">
+          Thank you for shopping with <strong className="text-brand-burgundy font-serif font-bold">ONLY WOMEN</strong>.
         </p>
       </div>
 
