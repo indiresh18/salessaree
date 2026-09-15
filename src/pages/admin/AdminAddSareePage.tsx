@@ -5,9 +5,9 @@ import { useShop } from '../../context/ShopContext';
 import { useToast } from '../../context/ToastContext';
 import { FALLBACK_SAREE_IMAGE } from '../../data/sampleSarees';
 
-const FABRICS = ['Silk', 'Cotton', 'Linen', 'Chiffon', 'Georgette', 'Organza', 'Tussar'];
+const DEFAULT_FABRICS = ['Silk', 'Cotton', 'Linen', 'Chiffon', 'Georgette', 'Organza', 'Tussar'];
 const DEFAULT_CATEGORIES = ['Kanchipuram', 'Banarasi', 'Party Wear', 'Traditional', 'Bandhani', 'Chanderi'];
-const COLORS = ['Red', 'Pink', 'Blue', 'Green', 'Yellow', 'Black', 'White', 'Purple', 'Maroon', 'Gold', 'Beige'];
+const DEFAULT_COLORS = ['Red', 'Pink', 'Blue', 'Green', 'Yellow', 'Black', 'White', 'Purple', 'Maroon', 'Gold', 'Beige'];
 
 export const AdminAddSareePage: React.FC = () => {
   const { sarees, addNewSaree } = useShop();
@@ -15,12 +15,26 @@ export const AdminAddSareePage: React.FC = () => {
   const navigate = useNavigate();
 
   const [uploadMode, setUploadMode] = useState<'file' | 'url'>('file');
+
+  const [isCustomFabric, setIsCustomFabric] = useState(false);
+  const [customFabric, setCustomFabric] = useState('');
+
   const [isCustomCategory, setIsCustomCategory] = useState(false);
   const [customCategory, setCustomCategory] = useState('');
 
+  const [isCustomColor, setIsCustomColor] = useState(false);
+  const [customColor, setCustomColor] = useState('');
+
+  const fabricOptions = useMemo(() => {
+    return Array.from(new Set([...DEFAULT_FABRICS, ...sarees.map(s => s.fabric)]));
+  }, [sarees]);
+
   const categoryOptions = useMemo(() => {
-    const list = Array.from(new Set([...DEFAULT_CATEGORIES, ...sarees.map(s => s.category)]));
-    return list;
+    return Array.from(new Set([...DEFAULT_CATEGORIES, ...sarees.map(s => s.category)]));
+  }, [sarees]);
+
+  const colorOptions = useMemo(() => {
+    return Array.from(new Set([...DEFAULT_COLORS, ...sarees.map(s => s.color)]));
   }, [sarees]);
 
   const [formData, setFormData] = useState({
@@ -63,7 +77,9 @@ export const AdminAddSareePage: React.FC = () => {
 
     if (!formData.name.trim()) errs.name = 'Saree Name is required';
     if (!formData.price || Number(formData.price) <= 0) errs.price = 'Enter a valid price';
+    if (isCustomFabric && !customFabric.trim()) errs.fabric = 'Fabric name is required';
     if (isCustomCategory && !customCategory.trim()) errs.category = 'Saree type name is required';
+    if (isCustomColor && !customColor.trim()) errs.color = 'Color name is required';
     if (!formData.description.trim()) errs.description = 'Description is required';
     if (!formData.stock || Number(formData.stock) < 0) errs.stock = 'Enter valid stock count';
     if (!formData.image.trim()) errs.image = 'Please upload a saree photo or provide a photo URL';
@@ -79,14 +95,16 @@ export const AdminAddSareePage: React.FC = () => {
       return;
     }
 
+    const finalFabric = isCustomFabric ? customFabric.trim() : formData.fabric;
     const finalCategory = isCustomCategory ? customCategory.trim() : formData.category;
+    const finalColor = isCustomColor ? customColor.trim() : formData.color;
 
     addNewSaree({
       name: formData.name.trim(),
       price: Number(formData.price),
-      fabric: formData.fabric,
+      fabric: finalFabric,
       category: finalCategory,
-      color: formData.color,
+      color: finalColor,
       description: formData.description.trim(),
       stock: Number(formData.stock),
       image: formData.image.trim()
@@ -269,21 +287,62 @@ export const AdminAddSareePage: React.FC = () => {
 
           {/* Fabric, Category, Color, Stock Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+            {/* Fabric */}
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-brand-burgundy mb-1">
-                Fabric *
-              </label>
-              <select
-                value={formData.fabric}
-                onChange={e => setFormData({ ...formData, fabric: e.target.value })}
-                className="w-full bg-brand-cream/50 border border-brand-gold/30 rounded-xl px-3 py-3 text-xs font-bold text-brand-burgundy focus:ring-2 focus:ring-brand-gold cursor-pointer"
-              >
-                {FABRICS.map(f => (
-                  <option key={f} value={f}>{f}</option>
-                ))}
-              </select>
+              <div className="flex items-center justify-between mb-1">
+                <label className="block text-xs font-bold uppercase tracking-wider text-brand-burgundy">
+                  Fabric *
+                </label>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsCustomFabric(!isCustomFabric);
+                    if (isCustomFabric) setCustomFabric('');
+                  }}
+                  className="text-[11px] font-bold text-brand-burgundy hover:text-brand-wine underline flex items-center gap-0.5"
+                >
+                  <Plus className="w-3 h-3 text-brand-gold" />
+                  {isCustomFabric ? 'Select Existing' : 'New Fabric'}
+                </button>
+              </div>
+
+              {isCustomFabric ? (
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Enter new fabric (e.g. Velvet)"
+                    value={customFabric}
+                    onChange={e => setCustomFabric(e.target.value)}
+                    className={`w-full px-3 py-3 bg-brand-cream/50 border rounded-xl text-xs font-bold text-brand-burgundy focus:ring-2 focus:ring-brand-gold focus:outline-none ${
+                      errors.fabric ? 'border-red-500' : 'border-brand-gold/30'
+                    }`}
+                  />
+                  {errors.fabric && <p className="text-xs text-red-600 mt-1">{errors.fabric}</p>}
+                </div>
+              ) : (
+                <select
+                  value={formData.fabric}
+                  onChange={e => {
+                    if (e.target.value === '__ADD_NEW__') {
+                      setIsCustomFabric(true);
+                      setCustomFabric('');
+                    } else {
+                      setFormData({ ...formData, fabric: e.target.value });
+                    }
+                  }}
+                  className="w-full bg-brand-cream/50 border border-brand-gold/30 rounded-xl px-3 py-3 text-xs font-bold text-brand-burgundy focus:ring-2 focus:ring-brand-gold cursor-pointer"
+                >
+                  {fabricOptions.map(f => (
+                    <option key={f} value={f}>{f}</option>
+                  ))}
+                  <option value="__ADD_NEW__" className="font-bold text-brand-burgundy">
+                    + Add New Fabric...
+                  </option>
+                </select>
+              )}
             </div>
 
+            {/* Saree Type / Category */}
             <div>
               <div className="flex items-center justify-between mb-1">
                 <label className="block text-xs font-bold uppercase tracking-wider text-brand-burgundy">
@@ -293,9 +352,7 @@ export const AdminAddSareePage: React.FC = () => {
                   type="button"
                   onClick={() => {
                     setIsCustomCategory(!isCustomCategory);
-                    if (isCustomCategory) {
-                      setCustomCategory('');
-                    }
+                    if (isCustomCategory) setCustomCategory('');
                   }}
                   className="text-[11px] font-bold text-brand-burgundy hover:text-brand-wine underline flex items-center gap-0.5"
                 >
@@ -340,19 +397,59 @@ export const AdminAddSareePage: React.FC = () => {
               )}
             </div>
 
+            {/* Color */}
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-brand-burgundy mb-1">
-                Color *
-              </label>
-              <select
-                value={formData.color}
-                onChange={e => setFormData({ ...formData, color: e.target.value })}
-                className="w-full bg-brand-cream/50 border border-brand-gold/30 rounded-xl px-3 py-3 text-xs font-bold text-brand-burgundy focus:ring-2 focus:ring-brand-gold cursor-pointer"
-              >
-                {COLORS.map(c => (
-                  <option key={c} value={c}>{c}</option>
-                ))}
-              </select>
+              <div className="flex items-center justify-between mb-1">
+                <label className="block text-xs font-bold uppercase tracking-wider text-brand-burgundy">
+                  Color *
+                </label>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsCustomColor(!isCustomColor);
+                    if (isCustomColor) setCustomColor('');
+                  }}
+                  className="text-[11px] font-bold text-brand-burgundy hover:text-brand-wine underline flex items-center gap-0.5"
+                >
+                  <Plus className="w-3 h-3 text-brand-gold" />
+                  {isCustomColor ? 'Select Existing' : 'New Color'}
+                </button>
+              </div>
+
+              {isCustomColor ? (
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Enter new color (e.g. Peach)"
+                    value={customColor}
+                    onChange={e => setCustomColor(e.target.value)}
+                    className={`w-full px-3 py-3 bg-brand-cream/50 border rounded-xl text-xs font-bold text-brand-burgundy focus:ring-2 focus:ring-brand-gold focus:outline-none ${
+                      errors.color ? 'border-red-500' : 'border-brand-gold/30'
+                    }`}
+                  />
+                  {errors.color && <p className="text-xs text-red-600 mt-1">{errors.color}</p>}
+                </div>
+              ) : (
+                <select
+                  value={formData.color}
+                  onChange={e => {
+                    if (e.target.value === '__ADD_NEW__') {
+                      setIsCustomColor(true);
+                      setCustomColor('');
+                    } else {
+                      setFormData({ ...formData, color: e.target.value });
+                    }
+                  }}
+                  className="w-full bg-brand-cream/50 border border-brand-gold/30 rounded-xl px-3 py-3 text-xs font-bold text-brand-burgundy focus:ring-2 focus:ring-brand-gold cursor-pointer"
+                >
+                  {colorOptions.map(c => (
+                    <option key={c} value={c}>{c}</option>
+                  ))}
+                  <option value="__ADD_NEW__" className="font-bold text-brand-burgundy">
+                    + Add New Color...
+                  </option>
+                </select>
+              )}
             </div>
 
             <div>

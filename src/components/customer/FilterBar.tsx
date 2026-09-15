@@ -3,9 +3,9 @@ import { Filter, RotateCcw, Search, SlidersHorizontal } from 'lucide-react';
 import { useShop } from '../../context/ShopContext';
 import { FilterState, SortOption } from '../../types';
 
-const FABRICS = ['All', 'Silk', 'Cotton', 'Linen', 'Chiffon', 'Georgette', 'Organza'];
+const DEFAULT_FABRICS = ['All', 'Silk', 'Cotton', 'Linen', 'Chiffon', 'Georgette', 'Organza'];
 const DEFAULT_CATEGORIES = ['All', 'Kanchipuram', 'Banarasi', 'Party Wear', 'Traditional'];
-const COLORS = ['All', 'Red', 'Pink', 'Blue', 'Green', 'Yellow', 'Black', 'White', 'Purple', 'Maroon', 'Gold', 'Beige'];
+const DEFAULT_COLORS = ['All', 'Red', 'Pink', 'Blue', 'Green', 'Yellow', 'Black', 'White', 'Purple', 'Maroon', 'Gold', 'Beige'];
 const PRICE_RANGES = ['All', 'Under ₹1,500', '₹1,500 - ₹3,000', '₹3,000 - ₹5,000', 'Above ₹5,000'];
 
 const SORT_OPTIONS: { label: string; value: SortOption }[] = [
@@ -19,8 +19,16 @@ const SORT_OPTIONS: { label: string; value: SortOption }[] = [
 export const FilterBar: React.FC = () => {
   const { sarees, filters, setFilters, resetFilters, sortOption, setSortOption, filteredSarees } = useShop();
 
+  const availableFabrics = useMemo(() => {
+    return Array.from(new Set([...DEFAULT_FABRICS, ...sarees.map(s => s.fabric)]));
+  }, [sarees]);
+
   const availableCategories = useMemo(() => {
     return Array.from(new Set([...DEFAULT_CATEGORIES, ...sarees.map(s => s.category)]));
+  }, [sarees]);
+
+  const availableColors = useMemo(() => {
+    return Array.from(new Set([...DEFAULT_COLORS, ...sarees.map(s => s.color)]));
   }, [sarees]);
 
   const handleFilterChange = (key: keyof FilterState, value: string) => {
@@ -96,7 +104,7 @@ export const FilterBar: React.FC = () => {
             onChange={e => handleFilterChange('fabric', e.target.value)}
             className="w-full bg-brand-cream/40 border border-brand-gold/30 rounded-xl px-3 py-2 text-xs font-medium text-brand-charcoal focus:ring-2 focus:ring-brand-gold/50 cursor-pointer"
           >
-            {FABRICS.map(f => (
+            {availableFabrics.map(f => (
               <option key={f} value={f}>{f}</option>
             ))}
           </select>
@@ -128,7 +136,7 @@ export const FilterBar: React.FC = () => {
             onChange={e => handleFilterChange('color', e.target.value)}
             className="w-full bg-brand-cream/40 border border-brand-gold/30 rounded-xl px-3 py-2 text-xs font-medium text-brand-charcoal focus:ring-2 focus:ring-brand-gold/50 cursor-pointer"
           >
-            {COLORS.map(c => (
+            {availableColors.map(c => (
               <option key={c} value={c}>{c}</option>
             ))}
           </select>
