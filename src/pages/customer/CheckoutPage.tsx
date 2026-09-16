@@ -320,14 +320,50 @@ export const CheckoutPage: React.FC = () => {
                 Order Placed Successfully!
               </h3>
               
-              {/* BOLD & HIGHLIGHTED SUCCESS BANNER */}
-              <div className="bg-gradient-to-r from-amber-50 via-brand-cream to-amber-50 border-2 border-brand-gold/60 rounded-2xl p-3.5 sm:p-4 shadow-sm">
-                <p className="text-sm sm:text-base font-bold text-brand-burgundy leading-relaxed">
-                  ✨ <span className="bg-brand-gold/30 text-brand-deepBurgundy px-2.5 py-0.5 rounded-lg font-extrabold border border-brand-gold/40 inline-block my-0.5">
-                    Your order placed successfully
-                  </span>{' '}
-                  and our team will contact you shortly!
-                </p>
+              {/* ✨ FLASH MESSAGE CARD */}
+              <div className="relative overflow-hidden rounded-2xl shadow-lg border border-brand-gold/40"
+                style={{
+                  background: 'linear-gradient(135deg, #7c1c2e 0%, #a0283e 50%, #7c1c2e 100%)',
+                  animation: 'flashCardPulse 2.5s ease-in-out infinite',
+                }}>
+                {/* Shimmer sweep */}
+                <div className="absolute inset-0 pointer-events-none"
+                  style={{
+                    background: 'linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.12) 50%, transparent 60%)',
+                    animation: 'shimmerSweep 2.2s linear infinite',
+                  }} />
+                {/* Glowing ring */}
+                <div className="absolute -top-5 -right-5 w-20 h-20 rounded-full opacity-20"
+                  style={{ background: 'radial-gradient(circle, #f5c842 0%, transparent 70%)' }} />
+
+                <div className="relative z-10 flex items-start gap-3 px-4 py-3.5">
+                  <div className="flex-shrink-0 mt-0.5 w-8 h-8 rounded-full flex items-center justify-center shadow-md"
+                    style={{ background: 'linear-gradient(135deg, #f5c842, #e2a800)', animation: 'iconPop 1.8s ease-in-out infinite' }}>
+                    <span className="text-sm">📞</span>
+                  </div>
+                  <div className="flex flex-col gap-0.5 text-left">
+                    <p className="text-xs font-bold tracking-wide text-brand-gold/90 uppercase">✦ Order Confirmed!</p>
+                    <p className="text-white font-semibold text-xs sm:text-sm leading-snug">
+                      Your order placed successfully &amp;{' '}
+                      <span className="relative inline-block">
+                        <span className="relative z-10 font-extrabold text-brand-gold"
+                          style={{ textShadow: '0 0 8px rgba(245,200,66,0.6)' }}>
+                          our team will contact you shortly!
+                        </span>
+                        <span className="absolute left-0 -bottom-0.5 w-full h-0.5 rounded-full opacity-70"
+                          style={{ background: 'linear-gradient(90deg, transparent, #f5c842, transparent)' }} />
+                      </span>
+                    </p>
+                  </div>
+                </div>
+
+                {/* Ticker bar */}
+                <div className="relative overflow-hidden h-5 bg-black/20 flex items-center">
+                  <p className="whitespace-nowrap text-[10px] font-semibold text-brand-gold/80 tracking-widest px-3"
+                    style={{ animation: 'tickerScroll 8s linear infinite' }}>
+                    📦 &nbsp; We'll reach out soon &nbsp;•&nbsp; Thank you for shopping with ONLY WOMEN &nbsp;•&nbsp; Estimated delivery in 7 days &nbsp;•&nbsp; 📦
+                  </p>
+                </div>
               </div>
             </div>
 

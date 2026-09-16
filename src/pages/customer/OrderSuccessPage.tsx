@@ -32,15 +32,79 @@ export const OrderSuccessPage: React.FC = () => {
           Order Placed Successfully!
         </h1>
 
-        {/* BOLD & HIGHLIGHTED SUCCESS BANNER */}
-        <div className="bg-gradient-to-r from-amber-50 via-brand-cream to-amber-50 border-2 border-brand-gold/60 rounded-2xl p-4 sm:p-5 shadow-md">
-          <p className="text-base sm:text-lg font-bold text-brand-burgundy leading-relaxed">
-            ✨ <span className="bg-brand-gold/30 text-brand-deepBurgundy px-3 py-1 rounded-lg font-extrabold shadow-inner inline-block my-1 border border-brand-gold/40">
-              Your order placed successfully
-            </span>{' '}
-            and our team will contact you shortly!
-          </p>
+        {/* ✨ FLASH MESSAGE CARD */}
+        <div className="relative overflow-hidden rounded-2xl shadow-lg border border-brand-gold/40"
+          style={{
+            background: 'linear-gradient(135deg, #7c1c2e 0%, #a0283e 50%, #7c1c2e 100%)',
+            animation: 'flashCardPulse 2.5s ease-in-out infinite',
+          }}>
+          {/* Shimmer sweep */}
+          <div className="absolute inset-0 pointer-events-none"
+            style={{
+              background: 'linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.12) 50%, transparent 60%)',
+              animation: 'shimmerSweep 2.2s linear infinite',
+            }} />
+
+          {/* Glowing ring top-right */}
+          <div className="absolute -top-6 -right-6 w-24 h-24 rounded-full opacity-20"
+            style={{ background: 'radial-gradient(circle, #f5c842 0%, transparent 70%)' }} />
+
+          <div className="relative z-10 flex items-start gap-3 px-5 py-4">
+            {/* Icon badge */}
+            <div className="flex-shrink-0 mt-0.5 w-9 h-9 rounded-full flex items-center justify-center shadow-md"
+              style={{ background: 'linear-gradient(135deg, #f5c842, #e2a800)', animation: 'iconPop 1.8s ease-in-out infinite' }}>
+              <span className="text-base">📞</span>
+            </div>
+
+            <div className="flex flex-col gap-1 text-left">
+              {/* Line 1 */}
+              <p className="text-sm font-bold tracking-wide text-brand-gold/90 uppercase">
+                ✦ Order Confirmed!
+              </p>
+              {/* Line 2 – the star text */}
+              <p className="text-white font-semibold text-sm sm:text-base leading-snug">
+                Your order placed successfully &amp;{' '}
+                <span className="relative inline-block">
+                  <span className="relative z-10 font-extrabold text-brand-gold drop-shadow-sm"
+                    style={{ textShadow: '0 0 8px rgba(245,200,66,0.6)' }}>
+                    our team will contact you shortly!
+                  </span>
+                  {/* underline glow */}
+                  <span className="absolute left-0 -bottom-0.5 w-full h-0.5 rounded-full opacity-70"
+                    style={{ background: 'linear-gradient(90deg, transparent, #f5c842, transparent)' }} />
+                </span>
+              </p>
+            </div>
+          </div>
+
+          {/* Bottom ticker bar */}
+          <div className="relative overflow-hidden h-6 bg-black/20 flex items-center">
+            <p className="whitespace-nowrap text-[11px] font-semibold text-brand-gold/80 tracking-widest px-4"
+              style={{ animation: 'tickerScroll 8s linear infinite' }}>
+              📦 &nbsp; We'll reach out soon &nbsp;•&nbsp; Thank you for shopping with ONLY WOMEN &nbsp;•&nbsp; Estimated delivery in 7 days &nbsp;•&nbsp; 📦
+            </p>
+          </div>
         </div>
+
+        {/* Keyframes injected inline */}
+        <style>{`
+          @keyframes flashCardPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(245,200,66,0); }
+            50%       { box-shadow: 0 0 18px 4px rgba(245,200,66,0.35); }
+          }
+          @keyframes shimmerSweep {
+            0%   { transform: translateX(-100%); }
+            100% { transform: translateX(200%); }
+          }
+          @keyframes iconPop {
+            0%, 100% { transform: scale(1); }
+            50%       { transform: scale(1.12); }
+          }
+          @keyframes tickerScroll {
+            0%   { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+          }
+        `}</style>
 
         <p className="text-xs text-brand-muted">
           Thank you for shopping with <strong className="text-brand-burgundy font-serif font-bold">ONLY WOMEN</strong>.
